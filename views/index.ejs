@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atmospheric Weather</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="<%= weather ? weather.timeOfDay : 'day' %> <%= (weather && weather.isExtremeHeat) ? 'heat-mode' : '' %>">
+
+  <!-- Cold Frost Edge Overlay -->
+  <% if (weather && weather.isExtremeCold) { %>
+    <div class="frost-vignette"></div>
+  <% } %>
+
+  <!-- Heat Shimmer Overlay -->
+  <% if (weather && weather.isExtremeHeat) { %>
+    <div class="heat-wave-overlay"></div>
+  <% } %>
+
+  <!-- Sky Canvas -->
+  <div class="sky-container">
+    <% if (weather) { %>
+
+      <!-- Aurora Borealis -->
+      <% if (weather.isAurora) { %>
+        <div class="aurora-container">
+          <div class="aurora-curtain curtain-1"></div>
+          <div class="aurora-curtain curtain-2"></div>
+        </div>
+      <% } %>
+
+      <!-- Stars -->
+      <% if (weather.timeOfDay === 'night') { %>
+        <div class="stars"></div>
+      <% } %>
+
+      <!-- Celestial Sun/Moon -->
+      <% if (weather.timeOfDay === 'night') { %>
+        <div class="celestial moon">
+          <div class="crater crater-1"></div>
+          <div class="crater crater-2"></div>
+          <div class="crater crater-3"></div>
+        </div>
+      <% } else if (weather.timeOfDay === 'sunset' || weather.timeOfDay === 'sunrise') { %>
+        <div class="celestial sun golden-hour"></div>
+      <% } else { %>
+        <div class="celestial sun <%= weather.isExtremeHeat ? 'scorching-sun' : '' %>"></div>
+      <% } %>
+
+      <!-- Clouds -->
+      <% if (weather.isCloudy) { %>
+        <div class="clouds-container">
+          <div class="cloud cloud-1"></div>
+          <div class="cloud cloud-2"></div>
+          <div class="cloud cloud-3"></div>
+          <div class="cloud cloud-4"></div>
+        </div>
+      <% } %>
+
+      <!-- Particle Containers -->
+      <% if (weather.precipType === 'rain') { %>
+        <div class="rain-container" id="rain-container"></div>
+      <% } %>
+
+      <% if (weather.precipType === 'snow') { %>
+        <div class="snow-container" id="snow-container"></div>
+      <% } %>
+
+      <% if (weather.precipType === 'dust') { %>
+        <div class="dust-container" id="dust-container"></div>
+      <% } %>
+
+    <% } else { %>
+      <div class="celestial sun"></div>
+    <% } %>
+  </div>
+
+  <!-- UI Foreground Viewport -->
+  <div class="app-viewport">
+    
+    <header class="search-header">
+      <form action="/" method="POST" class="search-form">
+        <input 
+          type="text" 
+          name="city" 
+          placeholder="Search location (e.g. Tokyo, Riyadh, Reykjavik, Death Valley)..." 
+          required 
+          autocomplete="off"
+          class="search-input"
+        />
+        <button type="submit" class="search-button">Search</button>
+      </form>
+    </header>
+
+    <% if (error) { %>
+      <div class="error-banner">
+        <p><%= error %></p>
+      </div>
+    <% } %>
+
+    <% if (weather) { %>
+      <main class="hero-weather">
+        <div class="location-badge">
+          <h2><%= weather.city %><% if (weather.region) { %>, <%= weather.region %><% } %>, <%= weather.country %></h2>
+          <span class="local-time">Local Time: <%= weather.localTime.split(' ')[1] %></span>
+        </div>
+
+        <div class="temp-hero-group">
+          <span class="hero-temp"><%= weather.tempC %>°</span>
+          <div class="condition-group">
+            <img src="<%= weather.icon %>" alt="<%= weather.condition %>" class="hero-icon" />
+            <span class="condition-text"><%= weather.condition %></span>
+            <span class="feels-like">Feels like <%= weather.feelsLikeC %>°C</span>
+          </div>
+        </div>
+
+        <div class="glass-metrics">
+          <div class="metric-card">
+            <span class="metric-label">Humidity</span>
+            <span class="metric-value"><%= weather.humidity %>%</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Wind</span>
+            <span class="metric-value"><%= weather.windKph %> km/h</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">UV Index</span>
+            <span class="metric-value"><%= weather.uv %></span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Pressure</span>
+            <span class="metric-value"><%= weather.pressureMb %> hPa</span>
+          </div>
+        </div>
+      </main>
+    <% } else { %>
+      <div class="welcome-prompt">
+        <h2>Enter any city above to experience live atmospheric skies</h2>
+      </div>
+    <% } %>
+
+  </div>
+
+  <!-- Dynamic Particle Script Generators -->
+  <% if (weather && weather.precipType === 'rain') { %>
+    <script>
+      const rainBox = document.getElementById('rain-container');
+      if (rainBox) {
+        for (let i = 0; i < 40; i++) {
+          const drop = document.createElement('div');
+          drop.className = 'drop';
+          drop.style.left = Math.floor(Math.random() * 100) + '%';
+          drop.style.animationDelay = (Math.random() * 2).toFixed(2) + 's';
+          drop.style.animationDuration = (0.4 + Math.random() * 0.4).toFixed(2) + 's';
+          rainBox.appendChild(drop);
+        }
+      }
+    </script>
+  <% } %>
+
+  <% if (weather && weather.precipType === 'snow') { %>
+    <script>
+      const snowBox = document.getElementById('snow-container');
+      if (snowBox) {
+        for (let i = 0; i < 40; i++) {
+          const flake = document.createElement('div');
+          flake.className = 'snowflake';
+          const size = Math.floor(4 + Math.random() * 8);
+          flake.style.left = Math.floor(Math.random() * 100) + '%';
+          flake.style.animationDelay = (Math.random() * 5).toFixed(2) + 's';
+          flake.style.animationDuration = (3 + Math.random() * 4).toFixed(2) + 's';
+          flake.style.opacity = (0.3 + Math.random() * 0.7).toFixed(2);
+          flake.style.width = size + 'px';
+          flake.style.height = size + 'px';
+          snowBox.appendChild(flake);
+        }
+      }
+    </script>
+  <% } %>
+
+  <% if (weather && weather.precipType === 'dust') { %>
+    <script>
+      const dustBox = document.getElementById('dust-container');
+      if (dustBox) {
+        for (let i = 0; i < 35; i++) {
+          const grain = document.createElement('div');
+          grain.className = 'sand-grain';
+          grain.style.top = Math.floor(Math.random() * 100) + '%';
+          grain.style.animationDelay = (Math.random() * 3).toFixed(2) + 's';
+          grain.style.animationDuration = (1.5 + Math.random() * 2).toFixed(2) + 's';
+          dustBox.appendChild(grain);
+        }
+      }
+    </script>
+  <% } %>
+
+</body>
+</html>
