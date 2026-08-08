@@ -8,21 +8,17 @@
 </head>
 <body class="<%= weather ? weather.timeOfDay : 'day' %> <%= (weather && weather.isExtremeHeat) ? 'heat-mode' : '' %>">
 
-  <!-- Cold Frost Edge Overlay -->
   <% if (weather && weather.isExtremeCold) { %>
     <div class="frost-vignette"></div>
   <% } %>
 
-  <!-- Heat Shimmer Overlay -->
   <% if (weather && weather.isExtremeHeat) { %>
     <div class="heat-wave-overlay"></div>
   <% } %>
 
-  <!-- Sky Canvas -->
   <div class="sky-container">
     <% if (weather) { %>
 
-      <!-- Aurora Borealis -->
       <% if (weather.isAurora) { %>
         <div class="aurora-container">
           <div class="aurora-curtain curtain-1"></div>
@@ -30,12 +26,10 @@
         </div>
       <% } %>
 
-      <!-- Stars -->
       <% if (weather.timeOfDay === 'night') { %>
         <div class="stars"></div>
       <% } %>
 
-      <!-- Celestial Sun/Moon -->
       <% if (weather.timeOfDay === 'night') { %>
         <div class="celestial moon">
           <div class="crater crater-1"></div>
@@ -48,7 +42,6 @@
         <div class="celestial sun <%= weather.isExtremeHeat ? 'scorching-sun' : '' %>"></div>
       <% } %>
 
-      <!-- Clouds -->
       <% if (weather.isCloudy) { %>
         <div class="clouds-container">
           <div class="cloud cloud-1"></div>
@@ -58,7 +51,6 @@
         </div>
       <% } %>
 
-      <!-- Particle Containers -->
       <% if (weather.precipType === 'rain') { %>
         <div class="rain-container" id="rain-container"></div>
       <% } %>
@@ -76,7 +68,6 @@
     <% } %>
   </div>
 
-  <!-- UI Foreground Viewport -->
   <div class="app-viewport">
     
     <header class="search-header">
@@ -142,7 +133,6 @@
 
   </div>
 
-  <!-- Dynamic Particle Script Generators -->
   <% if (weather && weather.precipType === 'rain') { %>
     <script>
       const rainBox = document.getElementById('rain-container');
