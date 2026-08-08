@@ -6,18 +6,15 @@ require('dotenv').config();
 const app = express();
 const PORT = process.process?.env?.PORT || process.env.PORT || 3000;
 
-// Fix static asset serving path
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// GET Route
 app.get('/', (req, res) => {
   res.render('index', { weather: null, error: null });
 });
 
-// POST Route
 app.post('/', async (req, res) => {
   const city = req.body.city;
   const apiKey = process.env.WEATHERAPI_KEY;
@@ -32,11 +29,9 @@ app.post('/', async (req, res) => {
     const response = await axios.get(url);
     const data = response.data;
 
-    // 1. Calculate Destination Local Hour
     const localTimeStr = data.location.localtime;
     const localHour = parseInt(localTimeStr.split(' ')[1].split(':')[0], 10);
 
-    // 2. Time-of-Day Theme Logic
     let timeOfDay = 'night';
     if (data.current.is_day === 1) {
       if (localHour >= 5 && localHour <= 7) {
@@ -50,13 +45,11 @@ app.post('/', async (req, res) => {
       timeOfDay = 'night';
     }
 
-    // 3. Extreme Temperature Logic
     const tempC = Math.round(data.current.temp_c);
     const isExtremeHeat = tempC >= 35;
     const isExtremeCold = tempC <= -10;
     const isAurora = isExtremeCold && timeOfDay === 'night';
 
-    // 4. Precipitation & Weather Condition Parsing
     const conditionText = data.current.condition.text;
     const conditionLower = conditionText.toLowerCase();
 
