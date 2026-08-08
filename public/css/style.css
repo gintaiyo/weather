@@ -14,7 +14,6 @@ body {
   position: relative;
 }
 
-/* --- Atmospheric Gradients --- */
 
 body.day {
   background: linear-gradient(180deg, #2563eb 0%, #38bdf8 60%, #bae6fd 100%);
@@ -36,7 +35,6 @@ body.heat-mode {
   background: linear-gradient(180deg, #7c2d12 0%, #c2410c 40%, #f97316 70%, #fde047 100%) !important;
 }
 
-/* --- Sky Elements --- */
 
 .sky-container {
   position: fixed;
@@ -113,7 +111,6 @@ body.heat-mode {
   opacity: 0.75;
 }
 
-/* --- Clouds --- */
 
 .clouds-container {
   position: absolute;
@@ -164,7 +161,6 @@ body.night .cloud { background: rgba(148, 163, 184, 0.18); }
   100% { transform: translateX(calc(100vw + 600px)); }
 }
 
-/* --- Particles --- */
 
 .rain-container, .snow-container, .dust-container {
   position: absolute;
@@ -221,7 +217,6 @@ body.night .cloud { background: rgba(148, 163, 184, 0.18); }
   100% { transform: translateX(105vw) translateY(40px); }
 }
 
-/* --- Special Effects --- */
 
 .heat-wave-overlay {
   position: fixed;
@@ -284,7 +279,6 @@ body.night .cloud { background: rgba(148, 163, 184, 0.18); }
   100% { transform: rotate(5deg) translateY(30px); }
 }
 
-/* --- UI Layout --- */
 
 .app-viewport {
   position: relative;
